@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Løvbjerg Ordresystem</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 <style>
 :root{
   --red:#d70000;
@@ -20,9 +18,7 @@
   --border:#e5e7eb;
   --radius:18px;
 }
-
 *{box-sizing:border-box;}
-
 body{
   margin:0;
   font-family:'Inter',system-ui,sans-serif;
@@ -45,7 +41,6 @@ body{
   flex-wrap:wrap;
   gap:12px;
 }
-
 .app-header h1{margin:0;font-size:2rem;}
 .sub{opacity:.9;}
 .date{font-weight:700;}
@@ -61,7 +56,6 @@ body{
   box-shadow:0 10px 30px rgba(0,0,0,.08);
   margin-bottom:32px;
 }
-
 .tabs button{
   all:unset;
   cursor:pointer;
@@ -71,7 +65,6 @@ body{
   color:var(--muted);
   transition:.25s;
 }
-
 .tabs button.active{
   background:linear-gradient(135deg,var(--red),#ff4d4d);
   color:white;
@@ -85,15 +78,14 @@ body{
   gap:14px;
   margin-bottom:22px;
 }
-
-input, select{
+input, select, textarea{
   padding:14px 16px;
   border-radius:14px;
   border:1px solid var(--border);
   font-size:1rem;
   width:100%;
 }
-
+textarea{height:80px;}
 .btn{
   border:none;
   border-radius:14px;
@@ -105,16 +97,13 @@ input, select{
   box-shadow:0 10px 22px rgba(215,0,0,.35);
   transition:.2s;
 }
-
 .btn:hover{transform:translateY(-1px);box-shadow:0 14px 26px rgba(215,0,0,.4);}
 .btn:active{transform:scale(.96);}
-
 .btn.secondary{
-  background:white;
-  color:var(--text);
-  box-shadow:0 8px 18px rgba(0,0,0,.08);
+  background:linear-gradient(135deg,var(--red),#ff4d4d);
+  color:white;
+  box-shadow:0 10px 22px rgba(215,0,0,.35);
 }
-
 .btn.success{
   background:linear-gradient(135deg,var(--green),var(--green-light));
   box-shadow:0 10px 22px rgba(22,163,74,.35);
@@ -128,7 +117,6 @@ input, select{
   box-shadow:0 12px 35px rgba(0,0,0,.08);
   margin-bottom:28px;
 }
-
 .order,.customer{
   background:linear-gradient(180deg,#ffffff,#f7f8fc);
   border:1px solid var(--border);
@@ -136,18 +124,37 @@ input, select{
   padding:16px;
   margin-bottom:12px;
   transition:.2s;
+  position:relative;
+}
+.order:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.08);}
+.order.done{opacity:.4;filter:grayscale(1);border-left:4px solid var(--green);}
+.order.afhentet{
+  color:#6b7280;
+  background: repeating-linear-gradient(
+    45deg,
+    #f3f4f6,
+    #f3f4f6 10px,
+    #e5e7eb 10px,
+    #e5e7eb 20px
+  );
+  text-decoration:line-through;
+}
+.order.afhentet::after{
+  content:"AFHENTET";
+  position:absolute;
+  top:8px;
+  right:12px;
+  font-weight:700;
+  color:var(--red-dark);
 }
 
-.order:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.08);}
-.order.done{opacity:.4;filter:grayscale(1);}
-
+/* ACTIONS */
 .actions{
   margin-top:12px;
   display:flex;
   gap:8px;
   flex-wrap:wrap;
 }
-
 .actions button{
   font-size:.75rem;
   padding:8px 12px;
@@ -155,25 +162,16 @@ input, select{
   border:none;
   font-weight:700;
   cursor:pointer;
-  background:linear-gradient(135deg,var(--red),#ff4d4d);
-  color:white;
-  box-shadow:0 6px 14px rgba(215,0,0,.35);
   transition:.2s;
 }
-
-.actions button:nth-child(2){
-  background:linear-gradient(135deg,var(--green),var(--green-light));
-  box-shadow:0 6px 14px rgba(22,163,74,.35);
-}
-.actions button:nth-child(3){
-  background:linear-gradient(135deg,#111827,#374151);
-  box-shadow:0 6px 14px rgba(0,0,0,.4);
-}
-
+.actions button.edit{background:linear-gradient(135deg,#facc15,#eab308);color:white;box-shadow:0 6px 14px rgba(250,204,21,.35);}
+.actions button.ready{background:linear-gradient(135deg,var(--green),var(--green-light));color:white;box-shadow:0 6px 14px rgba(22,163,74,.35);}
+.actions button.picked{background:linear-gradient(135deg,var(--green),var(--green-light));color:white;box-shadow:0 6px 14px rgba(22,163,74,.35);}
+.actions button.delete{background:linear-gradient(135deg,var(--red),#ff4d4d);color:white;box-shadow:0 6px 14px rgba(215,0,0,.35);}
 .actions button:hover{transform:translateY(-1px);}
 .actions button:active{transform:scale(.95);}
 
-/* MODAL */
+/* MODALS */
 .modal-bg{
   position:fixed;
   inset:0;
@@ -184,7 +182,6 @@ input, select{
   z-index:1000;
   backdrop-filter: blur(4px);
 }
-
 .modal{
   background:linear-gradient(180deg,#ffffff,#f6f7fb);
   border-radius:28px;
@@ -197,54 +194,23 @@ input, select{
   box-shadow:0 30px 60px rgba(0,0,0,.35);
   animation:pop .25s ease;
 }
-
 @keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
-
 .modal h3{margin:0 0 6px 0;font-size:1.4rem;}
-
-.modal label{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:600;
-}
-
-.modal input[type="checkbox"]{
-  width:22px;
-  height:22px;
-  accent-color:var(--red);
-}
-
+.modal label{display:flex;align-items:center;gap:10px;font-weight:600;}
+.modal input[type="checkbox"]{width:22px;height:22px;accent-color:var(--red);}
 ul{list-style:none;padding:0;margin:0;max-height:160px;overflow:auto;}
-li{
-  background:#f3f4f6;
-  padding:6px 10px;
-  border-radius:10px;
-  margin-bottom:6px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-li button{
-  background:#ef4444;
-  border:none;
-  color:white;
-  border-radius:8px;
-  padding:4px 8px;
-  cursor:pointer;
-}
-
+li{background:#f3f4f6;padding:6px 10px;border-radius:10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;}
+li button{background:#ef4444;border:none;color:white;border-radius:8px;padding:4px 8px;cursor:pointer;}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
 </style>
 </head>
-
 <body>
 
 <div class="app-header">
   <div>
     <h1>Løvbjerg Ordresystem</h1>
-    <div class="sub">Ordrer & faste kunder</div>
+    <div class="sub">Ordrer, faste kunder & gavekurve</div>
   </div>
   <div class="date" id="currentDate"></div>
 </div>
@@ -252,8 +218,10 @@ li button{
 <div class="tabs">
   <button class="active" onclick="showTab('ordersTab',this)">📦 Ordrer</button>
   <button onclick="showTab('customersTab',this)">👤 Faste kunder</button>
+  <button onclick="showTab('giftsTab',this)">🎁 Gavekurve</button>
 </div>
 
+<!-- ORDRER TAB -->
 <div id="ordersTab" class="tab-content active">
   <div class="top-bar">
     <button class="btn" onclick="showAddModal()">➕ Opret ordre</button>
@@ -265,6 +233,7 @@ li button{
   <div id="orders-future" class="section"></div>
 </div>
 
+<!-- KUNDER TAB -->
 <div id="customersTab" class="tab-content">
   <div class="top-bar">
     <button class="btn" onclick="showAddModal()">➕ Tilføj fast kunde</button>
@@ -272,28 +241,27 @@ li button{
   <div id="customerContainer" class="section"></div>
 </div>
 
-<!-- MODALS -->
+<!-- GAVEKURVE TAB -->
+<div id="giftsTab" class="tab-content">
+  <div class="top-bar">
+    <button class="btn" onclick="showAddGiftModal()">➕ Opret gavekurv</button>
+  </div>
+  <div id="giftContainer" class="section"></div>
+</div>
+
+<!-- ORDRER MODAL -->
 <div id="addModal" class="modal-bg">
   <div class="modal">
-    <h3>Opret ordre</h3>
-
+    <h3>Opret / Rediger ordre</h3>
     <input id="addCustomer" placeholder="Firmanavn">
-
     <ul id="productList"></ul>
-
     <input id="addProductInput" placeholder="Tilføj produkt">
     <button class="btn success" onclick="addProduct()">➕ Tilføj produkt</button>
-
     <div style="display:flex;gap:10px">
       <input id="addDate" type="date">
       <input id="addTime" type="time">
     </div>
-
-    <label>
-      <input type="checkbox" id="addRepeat">
-      Fast ugentlig aftale
-    </label>
-
+    <label><input type="checkbox" id="addRepeat"> Fast ugentlig aftale</label>
     <div style="display:flex;gap:10px;margin-top:10px">
       <button class="btn" onclick="submitAddOrder()">Gem</button>
       <button class="btn secondary" onclick="hideAddModal()">Annuller</button>
@@ -301,6 +269,7 @@ li button{
   </div>
 </div>
 
+<!-- KLARGJORT MODAL -->
 <div id="readyModal" class="modal-bg">
   <div class="modal">
     <h3>Klargjort</h3>
@@ -312,28 +281,70 @@ li button{
   </div>
 </div>
 
-<script>
-function updateDate(){
-  document.getElementById("currentDate").innerText =
-    new Date().toLocaleDateString("da-DK",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
-}
-updateDate();
+<!-- GAVEKURV MODAL -->
+<div id="giftModal" class="modal-bg">
+  <div class="modal">
+    <h3>Opret / Rediger gavekurv</h3>
+    <input id="giftDate" type="date">
+    <input id="giftBudget" type="number" placeholder="Budget">
+    <input id="giftTarget" type="text" placeholder="Målgruppe">
+    <textarea id="giftNote" placeholder="Noter til kurv"></textarea>
+    <div style="display:flex;gap:10px;margin-top:10px">
+      <button class="btn" onclick="submitGiftBasket()">Gem</button>
+      <button class="btn secondary" onclick="hideAddGiftModal()">Annuller</button>
+    </div>
+  </div>
+</div>
 
+<script>
+/* ===== INIT ===== */
+updateDate();
 let orders = JSON.parse(localStorage.getItem("orders")||"[]");
 let nextId = orders.length ? Math.max(...orders.map(o=>o.id))+1 : 1;
-let tempProducts=[], readyId=null;
+let tempProducts=[], readyId=null, editId=null;
 
+let giftBaskets = JSON.parse(localStorage.getItem("giftBaskets")||"[]");
+let nextGiftId = giftBaskets.length ? Math.max(...giftBaskets.map(g=>g.id))+1 : 1;
+let editGiftId=null;
+
+/* ===== HELPERS ===== */
 function save(){localStorage.setItem("orders",JSON.stringify(orders));}
-function today(){return new Date().toISOString().split("T")[0];}
-function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x.toISOString().split("T")[0];}
+function saveGifts(){localStorage.setItem("giftBaskets",JSON.stringify(giftBaskets));}
+function today(){let d=new Date(); d.setHours(d.getHours()+1); return d.toISOString().split("T")[0];}
+function addDays(d,n){const x=new Date(d); x.setDate(x.getDate()+n); return x.toISOString().split("T")[0];}
 function weekday(d){return new Date(d).getDay();}
 
+/* ===== TABS ===== */
 function showTab(tab,btn){
   document.querySelectorAll(".tab-content").forEach(t=>t.classList.remove("active"));
   document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
   document.getElementById(tab).classList.add("active");
-  btn.classList.add("active");
+  if(btn) btn.classList.add("active");
   if(tab==="customersTab") renderCustomers();
+  if(tab==="giftsTab") renderGiftBaskets();
+}
+
+/* ===== ORDERS ===== */
+function getInstance(o,d){ if(!o.instances)o.instances={}; if(!o.instances[d])o.instances[d]={readyNote:"",afhentet:false}; return o.instances[d]; }
+
+function orderCard(o,isToday,isGenerated){
+  const inst = getInstance(o,o.date);
+  const div=document.createElement("div");
+  div.className="order "+(inst.afhentet?"afhentet":"");
+  div.innerHTML=`
+    <strong>${o.customer}</strong><br>
+    ${o.products.join(", ")}<br>
+    Afhentning: ${o.date} ${o.time||""}
+    ${inst.readyNote?`<div style="opacity:.7;margin-top:6px">📦 ${inst.readyNote}</div>`:""}
+    ${isToday && !isGenerated?`
+    <div class="actions">
+      <button class="ready" onclick="markReady(${o.id},'${o.date}')">Klargjort</button>
+      <button class="picked" onclick="markPicked(${o.id},'${o.date}')">Afhentet</button>
+      <button class="edit" onclick="editOrder(${o.id})">Rediger</button>
+      <button class="delete" onclick="deleteOrder(${o.id})">Slet</button>
+    </div>`:""}
+  `;
+  return div;
 }
 
 function renderOrders(){
@@ -341,124 +352,216 @@ function renderOrders(){
   const futureBox=document.getElementById("orders-future");
   todayBox.innerHTML="<h3>📍 Afhentes i dag</h3>";
   futureBox.innerHTML="<h3>📆 Kommende afhentninger (7 dage)</h3>";
-
   const q=document.getElementById("search").value.toLowerCase();
   let t=0,f=0;
   const next7=[...Array(7)].map((_,i)=>addDays(today(),i+1));
-
   orders.forEach(o=>{
     if(!o.customer.toLowerCase().includes(q)) return;
-
-    if(o.date===today()){todayBox.appendChild(orderCard(o,true,false));t++;}
-
+    if(o.date===today()){todayBox.appendChild(orderCard(o,true,false)); t++;}
     if(o.repeat){
-      next7.forEach(d=>{
-        if(weekday(d)===weekday(o.date)){
-          futureBox.appendChild(orderCard({...o,date:d},false,true));f++;
-        }
-      });
-    } else if(o.date>today()){
-      futureBox.appendChild(orderCard(o,false,false));f++;
-    }
+      next7.forEach(d=>{if(weekday(d)===weekday(o.date)) futureBox.appendChild(orderCard({...o,date:d},false,true)); f++;});
+    } else if(o.date>today()){futureBox.appendChild(orderCard(o,false,false)); f++;}
   });
-
   if(!t) todayBox.innerHTML+="<p>Ingen ordrer i dag</p>";
   if(!f) futureBox.innerHTML+="<p>Ingen kommende ordrer</p>";
 }
 
-function orderCard(o,isToday,isGenerated){
-  const div=document.createElement("div");
-  div.className="order"+(o.done?" done":"");
-  div.innerHTML=`
-    <strong>${o.customer}</strong><br>
-    ${o.products.join(", ")}<br>
-    Afhentning: ${o.date} ${o.time||""}
-    ${o.readyNote?`<div style="opacity:.7;margin-top:6px">📦 ${o.readyNote}</div>`:""}
-    ${isToday && !isGenerated?`
-    <div class="actions">
-      <button onclick="markReady(${o.id})">Klargjort</button>
-      <button onclick="toggleDone(${o.id})">Afhentet</button>
-      <button onclick="deleteOrder(${o.id})">Slet</button>
-    </div>`:""}
-  `;
-  return div;
-}
-
-function toggleDone(id){orders.find(o=>o.id===id).done^=1;save();renderOrders();}
-function deleteOrder(id){if(confirm("Slet ordre?")){orders=orders.filter(o=>o.id!==id);save();renderOrders();renderCustomers();}}
-function markReady(id){readyId=id;readyNoteInput.value="";readyModal.style.display="flex";}
-function submitReady(){orders.find(o=>o.id===readyId).readyNote=readyNoteInput.value;hideReadyModal();save();renderOrders();}
+/* ===== HANDLERS ===== */
+function markReady(id,date){readyId={id,date};readyNoteInput.value=getInstance(orders.find(o=>o.id===id),date).readyNote;readyModal.style.display="flex";}
+function submitReady(){const o=orders.find(o=>o.id===readyId.id);getInstance(o,readyId.date).readyNote=readyNoteInput.value;hideReadyModal();save();renderOrders();}
 function hideReadyModal(){readyModal.style.display="none";}
+function markPicked(id,date){const o=orders.find(o=>o.id===id);getInstance(o,date).afhentet=true;save();renderOrders();}
+function editOrder(id){const o=orders.find(o=>o.id===id); if(o) showAddModal(o);}
+function deleteOrder(id){if(confirm("Slet ordre?")){orders=orders.filter(o=>o.id!==id);save();renderOrders();renderCustomers();}}
 
-function showAddModal(){
+/* ===== ADD / EDIT ORDER ===== */
+function showAddModal(order=null){
   tempProducts=[];
-  addCustomer.value="";
+  if(order){
+    editId=order.id;
+    addCustomer.value=order.customer;
+    order.products.forEach(p=>tempProducts.push(p));
+    addDate.value=order.date;
+    addTime.value=order.time;
+    addRepeat.checked=order.repeat;
+  } else { editId=null; addCustomer.value=""; addDate.value=today(); addTime.value=""; addRepeat.checked=false; }
   addProductInput.value="";
-  addDate.value=today();
-  addTime.value="";
-  addRepeat.checked=false;
   renderTemp();
   addModal.style.display="flex";
 }
+function hideAddModal(){
+  addModal.style.display="none";
+}
 
-function hideAddModal(){addModal.style.display="none";}
-
+/* ===== PRODUKTER I ORDRE ===== */
 function addProduct(){
-  const v=addProductInput.value.trim();
-  if(!v) return;
-  tempProducts.push(v);
+  const val = addProductInput.value.trim();
+  if(!val) return;
+  tempProducts.push(val);
   addProductInput.value="";
   renderTemp();
 }
-
+function removeTemp(i){
+  tempProducts.splice(i,1);
+  renderTemp();
+}
 function renderTemp(){
   productList.innerHTML="";
   tempProducts.forEach((p,i)=>{
     const li=document.createElement("li");
-    li.innerHTML=`${p}<button onclick="tempProducts.splice(${i},1);renderTemp()">x</button>`;
+    li.innerHTML=`${p} <button onclick="removeTemp(${i})">✖</button>`;
     productList.appendChild(li);
   });
 }
 
+/* ===== GEM ORDRE ===== */
 function submitAddOrder(){
-  if(!addCustomer.value.trim()||!tempProducts.length) return alert("Udfyld alle felter");
-  orders.push({
-    id:nextId++,
-    customer:addCustomer.value.trim(),
-    products:[...tempProducts],
-    date:addDate.value,
-    time:addTime.value,
-    repeat:addRepeat.checked,
-    done:false,
-    readyNote:""
-  });
-  save(); hideAddModal(); renderOrders(); renderCustomers();
+  if(!addCustomer.value.trim()||!tempProducts.length||!addDate.value) 
+    return alert("Udfyld alle felter");
+
+  if(editId){
+    let o=orders.find(o=>o.id===editId);
+    o.customer=addCustomer.value;
+    o.products=[...tempProducts];
+    o.date=addDate.value;
+    o.time=addTime.value;
+    o.repeat=addRepeat.checked;
+  } else {
+    orders.push({
+      id:nextId++,
+      customer:addCustomer.value,
+      products:[...tempProducts],
+      date:addDate.value,
+      time:addTime.value,
+      repeat:addRepeat.checked,
+      instances:{}
+    });
+  }
+  save();
+  hideAddModal();
+  renderOrders();
+  renderCustomers();
 }
 
+/* ===== KUNDER ===== */
 function renderCustomers(){
-  customerContainer.innerHTML="<h3>👤 Faste kunder</h3>";
+  const container=document.getElementById("customerContainer");
+  container.innerHTML="<h3>👤 Faste kunder</h3>";
   const list=orders.filter(o=>o.repeat);
-  if(!list.length) return customerContainer.innerHTML+="<p>Ingen faste kunder</p>";
+  if(!list.length){ container.innerHTML+="<p>Ingen faste kunder</p>"; return;}
   list.forEach(o=>{
     const div=document.createElement("div");
     div.className="customer";
-    div.innerHTML=`<strong>${o.customer}</strong><br>${o.products.join(", ")}<br>${new Date(o.date).toLocaleDateString("da-DK",{weekday:"long"})}`;
-    customerContainer.appendChild(div);
+    div.innerHTML=`
+      <strong>${o.customer}</strong><br>
+      ${o.products.join(", ")}<br>
+      Afhentning: ${o.time||""}
+      <div class="actions">
+        <button class="edit" onclick="editOrder(${o.id})">Rediger</button>
+        <button class="delete" onclick="deleteOrder(${o.id})">Slet</button>
+      </div>`;
+    container.appendChild(div);
   });
 }
 
+/* ===== PRINT / RYD ===== */
 function printToday(){
   const list=orders.filter(o=>o.date===today());
   const w=window.open("");
   w.document.write("<h1>Dagens ordrer</h1>");
-  list.forEach(o=>w.document.write(`<p><strong>${o.customer}</strong><br>${o.products.join(", ")}<br>${o.time||""}</p><hr>`));
+  list.forEach(o=>{
+    w.document.write(`<p><strong>${o.customer}</strong><br>
+      ${o.products.join(", ")}<br>
+      Afhentning: ${o.time||""}</p><hr>`);
+  });
   w.print();
 }
+function clearAllData(){
+  if(confirm("Slet ALT data?")){
+    localStorage.clear();
+    location.reload();
+  }
+}
 
-function clearAllData(){if(confirm("Slet ALT?")){localStorage.clear();location.reload();}}
+/* ===== GAVEKURVE ===== */
+function showAddGiftModal(g=null){
+  editGiftId=null;
+  giftDate.value=today();
+  giftBudget.value="";
+  giftTarget.value="";
+  giftNote.value="";
+  if(g){
+    editGiftId=g.id;
+    giftDate.value=g.date;
+    giftBudget.value=g.budget;
+    giftTarget.value=g.target;
+    giftNote.value=g.note;
+  }
+  giftModal.style.display="flex";
+}
+function hideAddGiftModal(){giftModal.style.display="none";}
 
-renderOrders(); renderCustomers();
+function submitGiftBasket(){
+  if(!giftDate.value||!giftBudget.value) return alert("Udfyld felter");
+  if(editGiftId){
+    let g=giftBaskets.find(x=>x.id===editGiftId);
+    g.date=giftDate.value;
+    g.budget=giftBudget.value;
+    g.target=giftTarget.value;
+    g.note=giftNote.value;
+  } else {
+    giftBaskets.push({
+      id:nextGiftId++,
+      date:giftDate.value,
+      budget:giftBudget.value,
+      target:giftTarget.value,
+      note:giftNote.value
+    });
+  }
+  saveGifts();
+  hideAddGiftModal();
+  renderGiftBaskets();
+}
+
+function renderGiftBaskets(){
+  const c=document.getElementById("giftContainer");
+  c.innerHTML="<h3>🎁 Gavekurve</h3>";
+  if(!giftBaskets.length){c.innerHTML+="<p>Ingen gavekurve</p>";return;}
+  giftBaskets.forEach(g=>{
+    const d=document.createElement("div");
+    d.className="order";
+    d.innerHTML=`
+      <strong>Afhentning:</strong> ${g.date}<br>
+      <strong>Budget:</strong> ${g.budget} kr<br>
+      <strong>Målgruppe:</strong> ${g.target||"-"}<br>
+      <strong>Noter:</strong> ${g.note||"-"}
+      <div class="actions">
+        <button class="edit" onclick="showAddGiftModal(giftBaskets.find(x=>x.id===${g.id}))">Rediger</button>
+        <button class="delete" onclick="deleteGiftBasket(${g.id})">Slet</button>
+      </div>`;
+    c.appendChild(d);
+  });
+}
+function deleteGiftBasket(id){
+  if(confirm("Slet gavekurv?")){
+    giftBaskets=giftBaskets.filter(g=>g.id!==id);
+    saveGifts();
+    renderGiftBaskets();
+  }
+}
+
+/* ===== DATO ===== */
+function updateDate(){
+  const d=new Date();
+  currentDate.textContent=d.toLocaleDateString("da-DK",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+}
+
+/* ===== START ===== */
+renderOrders();
+renderCustomers();
+renderGiftBaskets();
+setInterval(()=>{updateDate();renderOrders();},60000);
 </script>
-
 </body>
 </html>
+
