@@ -1,0 +1,465 @@
+:root{
+    --red:#d70000;
+    --red-dark:#a80000;
+    --green:#16a34a;
+    --green-light:#4ade80;
+    --bg:#f3f5fb;
+    --card:#ffffff;
+    --text:#111827;
+    --muted:#6b7280;
+    --border:#e5e7eb;
+    --radius:18px;
+  }
+  
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',system-ui,sans-serif;
+    background:radial-gradient(circle at top left,#ffffff 0%,#f2f4fa 45%,#eceff7 100%);
+    color:var(--text);
+    padding:26px;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  
+  /* HEADER */
+  .app-header{
+    background:linear-gradient(135deg,var(--red),#ff4d4d);
+    color:white;
+    padding:28px;
+    border-radius:30px;
+    box-shadow:0 22px 45px rgba(215,0,0,.35);
+    margin-bottom:50px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .app-header h1{margin:0;font-size:2rem;}
+  .sub{opacity:.9;}
+  .date{font-weight:700;}
+  
+  /* TABS */
+  .tabs{
+    display:flex;
+    gap:10px;
+    background:white;
+    padding:8px;
+    border-radius:22px;
+    width:fit-content;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    margin-bottom:32px;
+  }
+  .tabs button{
+    all:unset;
+    cursor:pointer;
+    padding:12px 22px;
+    border-radius:16px;
+    font-weight:700;
+    color:var(--muted);
+    transition:.25s;
+  }
+  .tabs button.active{
+    background:linear-gradient(135deg,var(--red),#ff4d4d);
+    color:white;
+    box-shadow:0 8px 18px rgba(215,0,0,.45);
+  }
+  
+  /* TOOLBAR */
+  .top-bar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-bottom:22px;
+  }
+  input, select, textarea{
+    padding:14px 16px;
+    border-radius:14px;
+    border:1px solid var(--border);
+    font-size:1rem;
+    width:100%;
+  }
+  textarea{height:80px;}
+  .btn{
+    border:none;
+    border-radius:14px;
+    padding:14px 20px;
+    font-weight:700;
+    cursor:pointer;
+    background:linear-gradient(135deg,var(--red),#ff4d4d);
+    color:white;
+    box-shadow:0 10px 22px rgba(215,0,0,.35);
+    transition:.2s;
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 14px 26px rgba(215,0,0,.4);}
+  .btn:active{transform:scale(.96);}
+  .btn.secondary{
+    background:linear-gradient(135deg,var(--red),#ff4d4d);
+    color:white;
+  }
+  .btn.success{
+    background:linear-gradient(135deg,var(--green),var(--green-light));
+    box-shadow:0 10px 22px rgba(22,163,74,.35);
+  }
+  
+  /* SECTIONS */
+  .section{
+    background:white;
+    border-radius:28px;
+    padding:22px;
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+    margin-bottom:28px;
+  }
+  .order,.customer{
+    background:linear-gradient(180deg,#ffffff,#f7f8fc);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:12px;
+    transition:.2s;
+    position:relative;
+    z-index:0;
+  }
+  .order:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.08);}
+  .order.done{opacity:.4;filter:grayscale(1);border-left:4px solid var(--green);}
+  .order.afhentet{
+    color:#6b7280;
+    background: repeating-linear-gradient(
+      45deg,
+      #f3f4f6,
+      #f3f4f6 10px,
+      #e5e7eb 10px,
+      #e5e7eb 20px
+    );
+    text-decoration:line-through;
+  }
+  .order.afhentet::after{
+    content:"AFHENTET";
+    position:absolute;
+    top:8px;
+    right:12px;
+    font-weight:700;
+    color:var(--red-dark);
+  }
+  
+  /* ACTIONS */
+  .actions{
+    margin-top:12px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .actions button{
+    font-size:.75rem;
+    padding:8px 12px;
+    border-radius:10px;
+    border:none;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s;
+  }
+  .actions button.edit{background:linear-gradient(135deg,#facc15,#eab308);color:white;}
+  .actions button.ready,
+  .actions button.picked{background:linear-gradient(135deg,var(--green),var(--green-light));color:white;}
+  .actions button.delete{background:linear-gradient(135deg,var(--red),#ff4d4d);color:white;}
+  .actions button:hover{transform:translateY(-1px);}
+  .actions button:active{transform:scale(.95);}
+  
+  /* MODALS */
+  .modal-bg{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:1000;
+    pointer-events:none;
+  }
+  .modal-bg.active{
+    display:flex;
+    pointer-events:all;
+  }
+  .modal{
+    background:linear-gradient(180deg,#ffffff,#f6f7fb);
+    border-radius:28px;
+    padding:28px;
+    width:100%;
+    max-width:520px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    box-shadow:0 30px 60px rgba(0,0,0,.35);
+    animation:pop .25s ease;
+    z-index:1001;
+    pointer-events:auto;
+    position:relative;
+  }
+  .modal h3{margin:0 0 6px 0;font-size:1.4rem;}
+  .modal label{display:flex;align-items:center;gap:10px;font-weight:600;}
+  .modal input[type="checkbox"]{width:22px;height:22px;accent-color:var(--red);}
+  .modal .close{
+    position:absolute;
+    top:12px;
+    right:12px;
+    font-size:1.4rem;
+    cursor:pointer;
+    color:var(--red-dark);
+    font-weight:700;
+  }
+  .modal .close:hover{color:var(--red);}
+  ul{list-style:none;padding:0;margin:0;max-height:160px;overflow:auto;}
+  li{background:#f3f4f6;padding:6px 10px;border-radius:10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;}
+  li button{background:#ef4444;border:none;color:white;border-radius:8px;padding:4px 8px;cursor:pointer;}
+  .tab-content{display:none;}
+  .tab-content.active{display:block;}
+  
+  /* FOOTER */
+  footer{
+    margin-top:auto;
+    text-align:center;
+    font-size:.8rem;
+    color:#6b7280;
+    padding:18px 6px;
+  }
+/* AFHENTET SEKTION – MODERN MED RØD ACCENT */
+.picked-section{
+    background:#ffffff; 
+    border-radius:28px;
+    padding:24px 28px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+    margin-bottom:36px;
+    border-left:6px solid #d70000; /* subtil rød accent */
+  }
+  
+  .picked-section h4{
+    margin:0 0 18px 0;
+    font-size:1.3rem;
+    font-weight:700;
+    color:#111827;
+    border-bottom:1px solid #e5e7eb;
+    padding-bottom:8px;
+  }
+  
+  .pickedItem{
+    background:#ffffff;
+    border-radius:22px;
+    padding:18px 20px;
+    margin-bottom:14px;
+    cursor:pointer;
+    font-weight:600;
+    color:#111827;
+    transition: transform .25s, box-shadow .25s, border-left .25s;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.04), 0 3px 6px rgba(0,0,0,0.08);
+    border-left:4px solid transparent; /* standard uden farve */
+  }
+  
+  .pickedItem:hover{
+    transform:translateY(-4px);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.07), 0 7px 14px rgba(0,0,0,0.1);
+    border-left:4px solid #d70000; /* rød accent ved hover */
+  }
+  
+  .pickedItem:active{
+    transform:scale(0.97);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.05), 0 3px 6px rgba(0,0,0,0.08);
+    border-left:4px solid #a80000; /* mørkere rød ved klik */
+  }
+  
+  /* SEPARATION MELLEM AFHENTET ORDRE OG GAVEKURVE */
+  #pickedOrders-section{
+    margin-bottom:48px;
+  }
+  
+  #pickedGifts-section{
+    margin-bottom:48px;
+  }
+  /* ===== AFHENTET SEKTION ===== */
+.picked-section {
+    margin-bottom: 40px;
+  }
+  .picked-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .picked-section h3 .badge {
+    background: linear-gradient(135deg,#d70000,#ff4d4d);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+  
+  /* Picked items container */
+  .picked-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  
+  /* Kortene */
+  .pickedItem {
+    background:white;
+    border-radius:22px;
+    padding:16px 20px;
+    flex: 1 1 200px;
+    min-width: 200px;
+    max-width: 300px;
+    box-shadow:0 8px 22px rgba(0,0,0,.08);
+    cursor:pointer;
+    transition: transform .2s, box-shadow .2s;
+    border-left:4px solid #d70000;
+  }
+  .pickedItem:hover {
+    transform: translateY(-3px);
+    box-shadow:0 12px 30px rgba(0,0,0,.12);
+  }
+  
+  /* Popup */
+  .pickedModal .modal {
+    border-radius:28px;
+    padding:28px;
+    background:white;
+    box-shadow:0 35px 65px rgba(0,0,0,.25);
+    max-width:480px;
+    animation: pop .25s ease;
+  }
+  .pickedModal .modal div {
+    margin-bottom:8px;
+  }
+  .pickedModal .modal div strong {
+    color:#d70000;
+  }  
+  /* AFHENTET POPUP MED KORT */
+#pickedModal .modal {
+    background:#ffffff;
+    border-radius:28px;
+    padding:28px 32px;
+    width:100%;
+    max-width:500px;
+    box-shadow:0 30px 60px rgba(0,0,0,0.25);
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    animation:pop .25s ease;
+    border-left:6px solid #d70000; /* rød accent */
+}
+
+/* Titel */
+#pickedModal h3 {
+    margin:0;
+    font-size:1.5rem;
+    font-weight:700;
+    color:#111827;
+    border-bottom:1px solid #e5e7eb;
+    padding-bottom:10px;
+}
+
+/* Kasse layout til hver info */
+#pickedDetails {
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+#pickedDetails div {
+    background:#f9f9f9;
+    border-radius:16px;
+    padding:12px 16px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:1rem;
+    color:#111827;
+}
+
+#pickedDetails div strong {
+    color:#d70000;  /* rød fremhævning */
+}
+
+/* Luk/OK-knap */
+#pickedModal button {
+    align-self:flex-end;
+    background:linear-gradient(135deg,#d70000,#ff4d4d);
+    color:white;
+    font-weight:700;
+    padding:10px 18px;
+    border-radius:14px;
+    border:none;
+    cursor:pointer;
+    transition:.2s;
+}
+
+#pickedModal button:hover {
+    transform:translateY(-2px);
+    box-shadow:0 10px 22px rgba(215,0,0,.35);
+}
+
+#pickedModal button:active {
+    transform:scale(.96);
+}
+/* ===== CONFIRMATION MODAL ===== */
+.confirmModal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.5);
+    z-index: 2000;
+    pointer-events: none;
+  }
+  .confirmModal.active {
+    display: flex;
+    pointer-events: all;
+  }
+  .confirmModal .modal {
+    background: white;
+    border-radius: 28px;
+    padding: 28px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 25px 55px rgba(0,0,0,.25);
+    animation: pop .25s ease;
+  }
+  .confirmModal .modal h3 {
+    margin: 0 0 18px 0;
+    font-size: 1.3rem;
+    color: #d70000; /* rød “Loebjerg-touch” */
+  }
+  .confirmModal .modal .actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .confirmModal .modal .actions button {
+    padding: 10px 18px;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: .2s;
+  }
+  .confirmModal .modal .actions button.confirm {
+    background: linear-gradient(135deg,#d70000,#ff4d4d);
+    color: white;
+  }
+  .confirmModal .modal .actions button.cancel {
+    background: #f3f4f6;
+    color: #111827;
+  }
+  .confirmModal .modal .actions button:hover {
+    transform: translateY(-1px);
+  }
+  .confirmModal .modal .actions button:active {
+    transform: scale(.96);
+  }
+  
